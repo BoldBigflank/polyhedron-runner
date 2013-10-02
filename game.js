@@ -244,10 +244,10 @@ exports.addAnswer = function(id, guess, cb){
     var player = _.find(game.players, function(p){ return p.id ==  id; });
     if( typeof player === 'undefined'){
         var player = {
-            id: uuid
-            , name: names.shift() || uuid
-            , answer: null
-            , answerScore: null
+            id: id
+            , name: names.shift() || id
+            , answer: guess
+            , answerScore: guessScore
             , score: 0
             , status: 'active'
         }
