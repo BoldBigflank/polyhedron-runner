@@ -7,7 +7,7 @@ module.exports.listen = function(app){
     io = socketio.listen(app)
 
     io.configure(function () { 
-      io.set("transports", ["xhr-polling"]); 
+      io.set("transports", ["websocket", "xhr-polling"]); 
       io.set("polling duration", 10); 
     });
 
