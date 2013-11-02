@@ -73,7 +73,7 @@ var GameComponent = React.createClass({
 		var timestamp = new Date().getTime();
 		var timestamp_diff = timestamp - this.state.now;
 		if(timestamp < this.state.end){
-			percent = parseInt((this.state.end - timestamp) / (this.state.end-this.state.begin) * 100);
+			percent = parseInt((this.state.end - timestamp - timestamp_diff) / (this.state.end-this.state.begin) * 100);
 			if(percent > 100) percent = 100;
 		} else {
 			percent = 0;
