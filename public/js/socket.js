@@ -2,6 +2,7 @@
 var socket = io.connect('http://qtserver.herokuapp.com');
 console.log("socket is defined");
 var game = {};
+var timestamp_diff = null;
 
 var Player = React.createClass({
 	render: function(){
@@ -44,6 +45,7 @@ var GameComponent = React.createClass({
 	componentDidMount: function(){
 		var self = this
 		socket.on("game", function(data){
+			timestamp_diff = null;
 			console.log("game", data);
 			self.setState(data);
 		})
@@ -71,7 +73,7 @@ var GameComponent = React.createClass({
 		if(this.state.state == 'prep') this.state.alert = null;
 		var alert =  (this.state.alert) ? <div class="alert alert-dismissable alert-danger"> {this.state.alert}</div> : "";
 		var timestamp = new Date().getTime();
-		var timestamp_diff = timestamp - this.state.now;
+		if(timestamp_diff == null) timestamp_diff = timestamp - this.state.now;
 		if(timestamp < this.state.end){
 			percent = parseInt((this.state.end - timestamp - timestamp_diff) / (this.state.end-this.state.begin) * 100);
 			if(percent > 100) percent = 100;
