@@ -45,7 +45,7 @@ var GameComponent = React.createClass({
 	componentDidMount: function(){
 		var self = this
 		socket.on("game", function(data){
-			timestamp_diff = null;
+			if(data.now) timestamp_diff = null;
 			console.log("game", data);
 			self.setState(data);
 		})
