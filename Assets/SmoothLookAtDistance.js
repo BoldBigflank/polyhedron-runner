@@ -32,6 +32,7 @@ function LateUpdate () {
 		transform.position.y = (bigR - r) * Mathf.Sin( r/bigR * t ) - a * Mathf.Sin( (1 + r/bigR )  * t );		
 
 	}
+	transform.LookAt(Vector3(0,0,-1.5) );
 }
 
 function Start () {

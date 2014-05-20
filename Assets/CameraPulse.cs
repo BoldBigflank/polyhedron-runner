@@ -26,7 +26,7 @@ public class CameraPulse : MonoBehaviour {
 //		Debug.Log (sampleSum[0]);
 //
 		baseFOV = GetComponent<Camera>().fieldOfView;
-
+		cameraFOV = baseFOV;
 	}
 	
 	// Update is called once per frame

@@ -10,7 +10,7 @@ public class PlayerRotation : MonoBehaviour {
 		rotationDelta = new Vector3(
 			Random.Range(-10,10),
 			Random.Range(-10,10),
-			Random.Range(-10,10));
+			Random.Range(1,10));
 		startPosition = transform.position;
 		startScale = transform.localScale;
 	}

@@ -20,9 +20,9 @@ public class ConstructorScript : MonoBehaviour {
 
 		colors.Add(HexToColor("FFA500"));
 		colors.Add(HexToColor("FFFF00"));
-		colors.Add(HexToColor("CCFF00"));
 
 		colors.Add(HexToColor("FFF52D"));
+		colors.Add(HexToColor("CCFF00"));
 		colors.Add(HexToColor("A0F919"));
 		colors.Add(HexToColor("EF0071"));
 		colors.Add(HexToColor("7807DF"));

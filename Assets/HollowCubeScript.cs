@@ -11,13 +11,15 @@ public class HollowCubeScript : MonoBehaviour {
 	Color originalColor;
 	bool isModifiedColor;
 	GameObject gameController;
+	bool collided;
 
 	void Start () {
 		passed = false;
 		Reset ();
-		maxScale = 2000.0F;
+		maxScale = 1600.0F;
 		isModifiedColor = false;
 		gameController = GameObject.FindGameObjectWithTag("GameController");
+
 	}
 
 	void Reset(){
@@ -27,17 +29,21 @@ public class HollowCubeScript : MonoBehaviour {
 		float y = Random.Range(0,360);
 		float z = Random.Range(0,360);
 		rotationOffset = Quaternion.Euler (new Vector3(x, y, z));
+		collided = false;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		aliveTime += Time.deltaTime;
-		float scale =  Mathf.Pow(2, 2.0F*(GameManager.timer - timeOffset) );
-		scale = Mathf.Min(scale, maxScale);
+		float scale =  Mathf.Pow(2, 1.6F*(GameManager.timer - timeOffset) );
+		if(scale > maxScale) scale = 0.0F;
+//		scale = Mathf.Min(scale, maxScale);
 		transform.localScale = new Vector3(scale, scale, scale);
 		transform.rotation =  GameManager.cubeRotation * rotationOffset;
+		transform.position = Vector3.zero;
 
-		if(scale > 6.0F && !passed){ // Past the 
+
+		if(scale > 3.0F && !passed){ // Past the 
 			GameManager.score++;
 			originalColor = renderer.material.color;
 			renderer.material.SetColor ("_Color", Color.white);
@@ -58,21 +64,24 @@ public class HollowCubeScript : MonoBehaviour {
 //		}
 	}
 
-	void OnCollisionEnter(Collision collision){
-		Debug.Log ("Collision!");
-	}
+//	void OnCollisionEnter(Collision collision){
+//		Debug.Log ("Collision!" + collision.transform.tag);
+//	}
+//
+//	void OnCollisionExit(Collision collision){
+//		Debug.Log ("CollisionExit" + collision.transform.tag);
+//	}
 
 	void OnTriggerEnter(Collider other){
-
+//		Debug.Log ("HollowCube OnTriggerEnter" + other.gameObject.tag);
 		if(other.gameObject.tag == "Player"){
 			if(GameManager.gameInProgress){
 				other.transform.parent = transform; // Make it a child so it gets sucked in.
 				other.audio.Play ();
 				gameController.SendMessage ("GameOver");
-//				GameManager.gameInProgress = false;
-//				GameManager.rewind = true;
 			}
 		}
 	}
+
 
 }

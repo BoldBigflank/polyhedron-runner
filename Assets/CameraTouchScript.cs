@@ -4,13 +4,11 @@ using System.Collections;
 public class CameraTouchScript : MonoBehaviour {
 	float damping = 1.0F;
 	Vector3 restPosition;
-	float screenDensity;
 	Vector3 lastMousePosition;
 
 	// Use this for initialization
 	void Start () {
 		restPosition = transform.position;
-		screenDensity = (float)Screen.width / Screen.dpi ;
 	}
 	
 	// Update is called once per frame

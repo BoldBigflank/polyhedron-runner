@@ -7,13 +7,15 @@ public class RotateOnTouch : MonoBehaviour {
 	float v;
 	float horizontalSpeed = 1.0F;
 	float verticalSpeed = 1.0F;
-	float damping = 24.0F;
+//	float damping = 24.0F;
 
 	Vector3 lastMousePosition;
+	GameObject mainCamera;
 
 	// Use this for initialization
 	void Start () {
 		lastMousePosition = Vector3.zero;
+		mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
 	}
 	
 	// Update is called once per frame
@@ -24,10 +26,12 @@ public class RotateOnTouch : MonoBehaviour {
 			Touch touch = Input.GetTouch(0);
 			if(touch.phase == TouchPhase.Moved){
 				h = horizontalSpeed * touch.deltaPosition.x * GameManager.sensitivity;
-				transform.Rotate (0, -h, 0, Space.World);
+//				transform.Rotate (0, -h, 0, Space.World);
+				transform.RotateAround(transform.position, mainCamera.transform.up, -h);
 
 				v = verticalSpeed * touch.deltaPosition.y * GameManager.sensitivity;
-				transform.Rotate (v, 0, 0, Space.World);
+//				transform.Rotate (v, 0, 0, Space.World);
+				transform.RotateAround (transform.position, mainCamera.transform.right, v);
 			}
 		} else if (Input.GetMouseButton(0) == true) { // Mouse control
 			if(Input.GetMouseButtonDown(0)){ lastMousePosition = Input.mousePosition;}
