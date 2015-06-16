@@ -45,16 +45,16 @@ public class HollowCubeScript : MonoBehaviour {
 
 		if(scale > 3.0F && !passed){ // Past the 
 			GameManager.score++;
-			originalColor = renderer.material.color;
-			renderer.material.SetColor ("_Color", Color.white);
-			renderer.material.SetColor ("_SpecColor", Color.white);
+			originalColor = GetComponent<Renderer>().material.color;
+			GetComponent<Renderer>().material.SetColor ("_Color", Color.white);
+			GetComponent<Renderer>().material.SetColor ("_SpecColor", Color.white);
 			isModifiedColor = true;
 			passed = true;
 			GameManager.numberOfCubes--; // Currently not deleting cubes, so subtract when they've passed
 		}
 		if(GameManager.rewind && isModifiedColor){
-			renderer.material.SetColor("_Color", originalColor);
-			renderer.material.SetColor("_SpecColor", originalColor);
+			GetComponent<Renderer>().material.SetColor("_Color", originalColor);
+			GetComponent<Renderer>().material.SetColor("_SpecColor", originalColor);
 			isModifiedColor = false;
 		}
 
@@ -77,7 +77,7 @@ public class HollowCubeScript : MonoBehaviour {
 		if(other.gameObject.tag == "Player"){
 			if(GameManager.gameInProgress){
 				other.transform.parent = transform; // Make it a child so it gets sucked in.
-				other.audio.Play ();
+				other.GetComponent<AudioSource>().Play ();
 				gameController.SendMessage ("GameOver");
 			}
 		}

@@ -215,6 +215,12 @@ public class GameManager : MonoBehaviour {
 				PlayerPrefs.SetInt("sound", (sound) ? 1:0);
 				AudioListener.volume = (sound) ? 1.0F:0.0F;
 			}
+			
+			if(GUI.Button(new Rect(Screen.width * 0.65F, Screen.height * 0.85F, Screen.width * 0.35F, Screen.width* 0.05F), "More Games")){
+				Application.OpenURL("http://bold-it.com/games-by-alex-swan/");
+			}
+			
+
 
 //			string toggleText = (sound) ? "Sound On":"Sound Off";
 //			sound = GUI.Toggle (new Rect(Screen.width * 0.05F, Screen.height * 0.85F, Screen.width * 0.10F, Screen.height* 0.15F), sound, toggleText);

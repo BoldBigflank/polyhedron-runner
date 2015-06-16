@@ -17,8 +17,8 @@ public class ClearPointScript : MonoBehaviour {
 		if(other.gameObject.tag == "Player" && !passed){
 			GameManager.score++;
 
-			transform.parent.renderer.material.SetColor ("_Color", Color.white);
-			transform.parent.renderer.material.SetColor ("_SpecColor", Color.white);
+			transform.parent.GetComponent<Renderer>().material.SetColor ("_Color", Color.white);
+			transform.parent.GetComponent<Renderer>().material.SetColor ("_SpecColor", Color.white);
 			passed = true;
 		}
 	}
