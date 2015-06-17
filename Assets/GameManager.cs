@@ -25,9 +25,7 @@ public class GameManager : MonoBehaviour {
 	int highScore;
 	bool sound;
 
-	float swipeBuffer;
 	Vector3 lastMousePosition;
-	bool linedUp;
 
 	struct rotationEvent {
 		public float time;
@@ -120,14 +118,7 @@ public class GameManager : MonoBehaviour {
 
 		// Save the sensitivity
 		PlayerPrefs.SetFloat("sensitivity", sensitivity);
-
-		// Tutorial stuff
-		if(highScore < 3){
-			swipeBuffer = 250.0F;
-			linedUp = false;
-		} else {
-			swipeBuffer = 0.0F;
-		}
+ 
 	}
 
 	void GameOver(){
@@ -145,17 +136,13 @@ public class GameManager : MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.Escape)) 
 			Application.Quit(); 
 
-		// TUTORIAL
 		if(gameInProgress){
-			if(swipeBuffer > 0.0F && highScore < 3 && timer > 3.0F){
-				// Tutorial stuff
 
-			} else {
-				timer += Time.deltaTime * 0.85F; // Increment the timer (15% slower now)
-				timer += Time.deltaTime * Mathf.Min((score/8) * 0.25F, 0.85F); // Speed up the timer 1/4 every 8 cubes, capping at 0.85
-				if(timer > rotationLog.Peek ().time + rotationEventInterval){
-					rotationLog.Push (new rotationEvent(timer, cubeRotation));
-				}
+			timer += Time.deltaTime * 0.85F; // Increment the timer (15% slower now)
+			timer += Time.deltaTime * Mathf.Min((score/8) * 0.25F, 0.85F); // Speed up the timer 1/4 every 8 cubes, capping at 0.85
+			if(timer > rotationLog.Peek ().time + rotationEventInterval){
+				rotationLog.Push (new rotationEvent(timer, cubeRotation));
+
 			}
 
 		}
