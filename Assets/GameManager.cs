@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -92,6 +92,12 @@ public class GameManager : MonoBehaviour {
 		logo = GameObject.FindGameObjectWithTag ("Logo");
 		player = GameObject.FindGameObjectWithTag ("Player");
 	}
+	
+	void NewGameButton(){
+		if(!rewind && !gameInProgress){
+			NewGame ();
+		}
+	}
 
 	void NewGame() {
 		logo.SetActive (false);
@@ -139,6 +145,7 @@ public class GameManager : MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.Escape)) 
 			Application.Quit(); 
 
+		// TUTORIAL
 		if(gameInProgress){
 			if(swipeBuffer > 0.0F && highScore < 3 && timer > 3.0F){
 				// Tutorial stuff
@@ -152,20 +159,29 @@ public class GameManager : MonoBehaviour {
 			}
 
 		}
-//		if(!rewind && gameInProgress) timer += Time.deltaTime;
 
-		if(Input.touchCount == 1){
-			Touch touch = Input.GetTouch(0);
-			if(touch.phase == TouchPhase.Moved){
-				if(timer > 2.0F)
-					swipeBuffer -= touch.deltaPosition.magnitude;
+//		// TOUCH CONTROLS
+//		if(Input.touchCount == 1){
+//			Touch touch = Input.GetTouch(0);
+//			if(touch.phase == TouchPhase.Moved){
+//				if(timer > 2.0F)
+//					swipeBuffer -= touch.deltaPosition.magnitude;
+//			}
+//		} else if (Input.GetMouseButton(0) == true) { // Mouse control
+//			if(Input.GetMouseButtonDown(0)){ lastMousePosition = Input.mousePosition;}
+//			if(timer > 2.0F) swipeBuffer -= (Input.mousePosition - lastMousePosition).magnitude;
+//			lastMousePosition = Input.mousePosition;
+//
+//		} 
+
+		if(!gameInProgress && !rewind){
+			if(Input.touchCount > 0){
+				NewGame ();
 			}
-		} else if (Input.GetMouseButton(0) == true) { // Mouse control
-			if(Input.GetMouseButtonDown(0)){ lastMousePosition = Input.mousePosition;}
-			if(timer > 2.0F) swipeBuffer -= (Input.mousePosition - lastMousePosition).magnitude;
-			lastMousePosition = Input.mousePosition;
-
-		} 
+			if(Input.GetMouseButtonDown(0)){
+				NewGame ();
+			}
+		}
 
 		if(rewind == true){
 			mainCamera.GetComponent<AudioSource>().pitch = -0.4F;
@@ -187,6 +203,12 @@ public class GameManager : MonoBehaviour {
 					cubeRotation = Quaternion.Slerp(cubeRotation, rotationLog.Peek().rotation, Time.deltaTime/(timer - rotationLog.Peek ().time ));
 			}
 		}
+		
+		if(!gameInProgress && !rewind){
+			logo.transform.FindChild("Best").GetComponent<TextMesh>().text = "Best\n"+highScore.ToString();
+			logo.transform.FindChild("Last").GetComponent<TextMesh>().text = "Last\n"+score.ToString();
+		
+		}
 
 	}
 
@@ -205,9 +227,9 @@ public class GameManager : MonoBehaviour {
 		} else if (!rewind) {
 			GUI.skin.label.normal.textColor = Color.black;
 			// New Game Button
-			if(GUI.Button(new Rect(Screen.width * 0.55F, Screen.height * 0.65F, Screen.width * 0.10F, Screen.height* 0.15F), play)){
-				NewGame ();
-			}
+//			if(GUI.Button(new Rect(Screen.width * 0.55F, Screen.height * 0.65F, Screen.width * 0.10F, Screen.height* 0.15F), play)){
+//				NewGame ();
+//			}
 
 			Texture soundTexture = (sound) ? soundOn : soundOff;
 			if(GUI.Button(new Rect(Screen.width * 0.05F, Screen.height * 0.85F, Screen.width * 0.05F, Screen.width* 0.05F), soundTexture)){
@@ -222,15 +244,8 @@ public class GameManager : MonoBehaviour {
 			
 
 
-//			string toggleText = (sound) ? "Sound On":"Sound Off";
-//			sound = GUI.Toggle (new Rect(Screen.width * 0.05F, Screen.height * 0.85F, Screen.width * 0.10F, Screen.height* 0.15F), sound, toggleText);
-//			
-
-//			GUI.Label (new Rect(Screen.width*0.05F, Screen.height*0.1F , Screen.width*0.04F, Screen.height * 0.8F), "S\nE\nN\nS\nI\nT\nI\nV\nI\nT\nY", lightStyle);
-
-			sensitivity = GUI.VerticalSlider(new Rect(Screen.width*0.05F, Screen.height*0.05F , guiSkin.verticalSlider.fixedWidth, guiSkin.verticalSlider.fixedHeight), sensitivity, 4.0F, 0.5F);
-			GUI.Label(new Rect(Screen.width * 0.6F, Screen.height * 0.35F, Screen.width * 0.15F, Screen.height* 0.2F), "Last\n"+score.ToString());
-			GUI.Label(new Rect(Screen.width * 0.25F, Screen.height * 0.35F, Screen.width * 0.15F, Screen.height* 0.2F), "Best\n"+highScore.ToString());
+//			GUI.Label(new Rect(Screen.width * 0.6F, Screen.height * 0.35F, Screen.width * 0.15F, Screen.height* 0.2F), "Last\n"+score.ToString());
+//			GUI.Label(new Rect(Screen.width * 0.25F, Screen.height * 0.35F, Screen.width * 0.15F, Screen.height* 0.2F), "Best\n"+highScore.ToString());
 
 		}
 	}
