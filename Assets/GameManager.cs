@@ -25,9 +25,7 @@ public class GameManager : MonoBehaviour {
 	int highScore;
 	bool sound;
 
-	float swipeBuffer;
 	Vector3 lastMousePosition;
-	bool linedUp;
 
 	struct rotationEvent {
 		public float time;
@@ -120,14 +118,7 @@ public class GameManager : MonoBehaviour {
 
 		// Save the sensitivity
 		PlayerPrefs.SetFloat("sensitivity", sensitivity);
-
-		// Tutorial stuff
-		if(highScore < 3){
-			swipeBuffer = 250.0F;
-			linedUp = false;
-		} else {
-			swipeBuffer = 0.0F;
-		}
+ 
 	}
 
 	void GameOver(){
@@ -145,17 +136,13 @@ public class GameManager : MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.Escape)) 
 			Application.Quit(); 
 
-		// TUTORIAL
 		if(gameInProgress){
-			if(swipeBuffer > 0.0F && highScore < 3 && timer > 3.0F){
-				// Tutorial stuff
 
-			} else {
-				timer += Time.deltaTime * 0.85F; // Increment the timer (15% slower now)
-				timer += Time.deltaTime * Mathf.Min((score/8) * 0.25F, 0.85F); // Speed up the timer 1/4 every 8 cubes, capping at 0.85
-				if(timer > rotationLog.Peek ().time + rotationEventInterval){
-					rotationLog.Push (new rotationEvent(timer, cubeRotation));
-				}
+			timer += Time.deltaTime * 0.85F; // Increment the timer (15% slower now)
+			timer += Time.deltaTime * Mathf.Min((score/8) * 0.25F, 0.85F); // Speed up the timer 1/4 every 8 cubes, capping at 0.85
+			if(timer > rotationLog.Peek ().time + rotationEventInterval){
+				rotationLog.Push (new rotationEvent(timer, cubeRotation));
+
 			}
 
 		}
@@ -212,41 +199,41 @@ public class GameManager : MonoBehaviour {
 
 	}
 
-	void OnGUI(){
-		GUI.skin = guiSkin;
-		if(gameInProgress){
-			// Show Time and score
-			GUI.Label (new Rect(Screen.width/4,Screen.height*0.9F,Screen.width/2,Screen.height*0.1F), score.ToString());
-			GUI.skin.label.normal.textColor = Color.white;
-			if(highScore < 3 && timer < 3.1F){
-				GUI.Label (new Rect(0.0F, 0.0F, Screen.width, Screen.height * 0.2F), "Swipe to Rotate Objects");
-			}else if(highScore < 3 && timer < 4.5F){
-				GUI.Label (new Rect(0.0F, 0.0F, Screen.width, Screen.height * 0.2F), "Find the Gap");
-			}
-
-		} else if (!rewind) {
-			GUI.skin.label.normal.textColor = Color.black;
-			// New Game Button
-//			if(GUI.Button(new Rect(Screen.width * 0.55F, Screen.height * 0.65F, Screen.width * 0.10F, Screen.height* 0.15F), play)){
-//				NewGame ();
+//	void OnGUI(){
+//		GUI.skin = guiSkin;
+//		if(gameInProgress){
+//			// Show Time and score
+//			GUI.Label (new Rect(Screen.width/4,Screen.height*0.9F,Screen.width/2,Screen.height*0.1F), score.ToString());
+//			GUI.skin.label.normal.textColor = Color.white;
+//			if(highScore < 3 && timer < 3.1F){
+//				GUI.Label (new Rect(0.0F, 0.0F, Screen.width, Screen.height * 0.2F), "Swipe to Rotate Objects");
+//			}else if(highScore < 3 && timer < 4.5F){
+//				GUI.Label (new Rect(0.0F, 0.0F, Screen.width, Screen.height * 0.2F), "Find the Gap");
 //			}
-
-			Texture soundTexture = (sound) ? soundOn : soundOff;
-			if(GUI.Button(new Rect(Screen.width * 0.05F, Screen.height * 0.85F, Screen.width * 0.05F, Screen.width* 0.05F), soundTexture)){
-				sound = !sound;
-				PlayerPrefs.SetInt("sound", (sound) ? 1:0);
-				AudioListener.volume = (sound) ? 1.0F:0.0F;
-			}
-			
-			if(GUI.Button(new Rect(Screen.width * 0.65F, Screen.height * 0.85F, Screen.width * 0.35F, Screen.width* 0.05F), "More Games")){
-				Application.OpenURL("http://bold-it.com/games-by-alex-swan/");
-			}
-			
-
-
-//			GUI.Label(new Rect(Screen.width * 0.6F, Screen.height * 0.35F, Screen.width * 0.15F, Screen.height* 0.2F), "Last\n"+score.ToString());
-//			GUI.Label(new Rect(Screen.width * 0.25F, Screen.height * 0.35F, Screen.width * 0.15F, Screen.height* 0.2F), "Best\n"+highScore.ToString());
-
-		}
-	}
+//
+//		} else if (!rewind) {
+//			GUI.skin.label.normal.textColor = Color.black;
+//			// New Game Button
+////			if(GUI.Button(new Rect(Screen.width * 0.55F, Screen.height * 0.65F, Screen.width * 0.10F, Screen.height* 0.15F), play)){
+////				NewGame ();
+////			}
+//
+//			Texture soundTexture = (sound) ? soundOn : soundOff;
+//			if(GUI.Button(new Rect(Screen.width * 0.05F, Screen.height * 0.85F, Screen.width * 0.05F, Screen.width* 0.05F), soundTexture)){
+//				sound = !sound;
+//				PlayerPrefs.SetInt("sound", (sound) ? 1:0);
+//				AudioListener.volume = (sound) ? 1.0F:0.0F;
+//			}
+//			
+//			if(GUI.Button(new Rect(Screen.width * 0.65F, Screen.height * 0.85F, Screen.width * 0.35F, Screen.width* 0.05F), "More Games")){
+//				Application.OpenURL("http://bold-it.com/games-by-alex-swan/");
+//			}
+//			
+//
+//
+////			GUI.Label(new Rect(Screen.width * 0.6F, Screen.height * 0.35F, Screen.width * 0.15F, Screen.height* 0.2F), "Last\n"+score.ToString());
+////			GUI.Label(new Rect(Screen.width * 0.25F, Screen.height * 0.35F, Screen.width * 0.15F, Screen.height* 0.2F), "Best\n"+highScore.ToString());
+//
+//		}
+//	}
 }
