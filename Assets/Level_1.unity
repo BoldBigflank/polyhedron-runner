@@ -582,6 +582,10 @@ Prefab:
       propertyPath: trackPosition
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 11400004, guid: 691bf3e71b387435bb6304e28d671b2f, type: 2}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 691bf3e71b387435bb6304e28d671b2f, type: 2}
   m_IsPrefabParent: 0
@@ -1051,7 +1055,6 @@ GameObject:
   - 4: {fileID: 2031724726}
   - 114: {fileID: 2031724725}
   - 114: {fileID: 2031724727}
-  - 114: {fileID: 2031724728}
   - 114: {fileID: 2031724729}
   m_Layer: 0
   m_Name: GameController
@@ -1156,17 +1159,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 45ee71853b1134cd6a63612ecdf3dbfa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2031724728
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2031724724}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &2031724729

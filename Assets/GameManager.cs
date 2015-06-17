@@ -212,41 +212,41 @@ public class GameManager : MonoBehaviour {
 
 	}
 
-	void OnGUI(){
-		GUI.skin = guiSkin;
-		if(gameInProgress){
-			// Show Time and score
-			GUI.Label (new Rect(Screen.width/4,Screen.height*0.9F,Screen.width/2,Screen.height*0.1F), score.ToString());
-			GUI.skin.label.normal.textColor = Color.white;
-			if(highScore < 3 && timer < 3.1F){
-				GUI.Label (new Rect(0.0F, 0.0F, Screen.width, Screen.height * 0.2F), "Swipe to Rotate Objects");
-			}else if(highScore < 3 && timer < 4.5F){
-				GUI.Label (new Rect(0.0F, 0.0F, Screen.width, Screen.height * 0.2F), "Find the Gap");
-			}
-
-		} else if (!rewind) {
-			GUI.skin.label.normal.textColor = Color.black;
-			// New Game Button
-//			if(GUI.Button(new Rect(Screen.width * 0.55F, Screen.height * 0.65F, Screen.width * 0.10F, Screen.height* 0.15F), play)){
-//				NewGame ();
+//	void OnGUI(){
+//		GUI.skin = guiSkin;
+//		if(gameInProgress){
+//			// Show Time and score
+//			GUI.Label (new Rect(Screen.width/4,Screen.height*0.9F,Screen.width/2,Screen.height*0.1F), score.ToString());
+//			GUI.skin.label.normal.textColor = Color.white;
+//			if(highScore < 3 && timer < 3.1F){
+//				GUI.Label (new Rect(0.0F, 0.0F, Screen.width, Screen.height * 0.2F), "Swipe to Rotate Objects");
+//			}else if(highScore < 3 && timer < 4.5F){
+//				GUI.Label (new Rect(0.0F, 0.0F, Screen.width, Screen.height * 0.2F), "Find the Gap");
 //			}
-
-			Texture soundTexture = (sound) ? soundOn : soundOff;
-			if(GUI.Button(new Rect(Screen.width * 0.05F, Screen.height * 0.85F, Screen.width * 0.05F, Screen.width* 0.05F), soundTexture)){
-				sound = !sound;
-				PlayerPrefs.SetInt("sound", (sound) ? 1:0);
-				AudioListener.volume = (sound) ? 1.0F:0.0F;
-			}
-			
-			if(GUI.Button(new Rect(Screen.width * 0.65F, Screen.height * 0.85F, Screen.width * 0.35F, Screen.width* 0.05F), "More Games")){
-				Application.OpenURL("http://bold-it.com/games-by-alex-swan/");
-			}
-			
-
-
-//			GUI.Label(new Rect(Screen.width * 0.6F, Screen.height * 0.35F, Screen.width * 0.15F, Screen.height* 0.2F), "Last\n"+score.ToString());
-//			GUI.Label(new Rect(Screen.width * 0.25F, Screen.height * 0.35F, Screen.width * 0.15F, Screen.height* 0.2F), "Best\n"+highScore.ToString());
-
-		}
-	}
+//
+//		} else if (!rewind) {
+//			GUI.skin.label.normal.textColor = Color.black;
+//			// New Game Button
+////			if(GUI.Button(new Rect(Screen.width * 0.55F, Screen.height * 0.65F, Screen.width * 0.10F, Screen.height* 0.15F), play)){
+////				NewGame ();
+////			}
+//
+//			Texture soundTexture = (sound) ? soundOn : soundOff;
+//			if(GUI.Button(new Rect(Screen.width * 0.05F, Screen.height * 0.85F, Screen.width * 0.05F, Screen.width* 0.05F), soundTexture)){
+//				sound = !sound;
+//				PlayerPrefs.SetInt("sound", (sound) ? 1:0);
+//				AudioListener.volume = (sound) ? 1.0F:0.0F;
+//			}
+//			
+//			if(GUI.Button(new Rect(Screen.width * 0.65F, Screen.height * 0.85F, Screen.width * 0.35F, Screen.width* 0.05F), "More Games")){
+//				Application.OpenURL("http://bold-it.com/games-by-alex-swan/");
+//			}
+//			
+//
+//
+////			GUI.Label(new Rect(Screen.width * 0.6F, Screen.height * 0.35F, Screen.width * 0.15F, Screen.height* 0.2F), "Last\n"+score.ToString());
+////			GUI.Label(new Rect(Screen.width * 0.25F, Screen.height * 0.35F, Screen.width * 0.15F, Screen.height* 0.2F), "Best\n"+highScore.ToString());
+//
+//		}
+//	}
 }

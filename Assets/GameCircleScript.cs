@@ -120,14 +120,14 @@ public class GameCircleScript : MonoBehaviour {
 		}
 	}
 
-	void OnGUI(){
-		GUI.skin = guiSkin;
-		if(!GameManager.gameInProgress && !GameManager.rewind){
-			if(GUI.Button(new Rect(Screen.width * 0.35F, Screen.height * 0.65F, Screen.width * 0.10F, Screen.height* 0.15F), agc)){
-				AGSClient.ShowGameCircleOverlay();
-			}
-		}
-	}
+//	void OnGUI(){
+//		GUI.skin = guiSkin;
+//		if(!GameManager.gameInProgress && !GameManager.rewind){
+//			if(GUI.Button(new Rect(Screen.width * 0.35F, Screen.height * 0.65F, Screen.width * 0.10F, Screen.height* 0.15F), agc)){
+//				AGSClient.ShowGameCircleOverlay();
+//			}
+//		}
+//	}
 
 	// Game Circle Functions
 	private void serviceNotReadyHandler (string error)    {
