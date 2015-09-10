@@ -1,5 +1,6 @@
 /** @jsx React.DOM */
-var socket = io.connect('http://qtserver.herokuapp.com');
+// var socket = io.connect('http://qtserver.herokuapp.com');
+var socket = io.connect();
 console.log("socket is defined");
 var game = {};
 var timestamp_diff = null;
