@@ -53,6 +53,7 @@ public class ConstructorScript : MonoBehaviour {
 		c.GetComponent<HollowCubeScript>().timeOffset = (GameManager.cubeIndex) * (2.57F) + 4 ;
 		Color cubeColor = colors[  GameManager.cubeIndex % colors.Count];
 		c.GetComponent<Renderer>().material.SetColor ("_Color", cubeColor);
+		c.transform.parent = gameObject.transform;
 //		c.GetComponent<Renderer>().material.SetColor ("_SpecColor", cubeColor);
 //		c.GetComponent<Renderer>().material.SetColor ("_ReflectColor", cubeColor);
 
