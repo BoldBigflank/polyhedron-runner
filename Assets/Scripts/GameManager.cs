@@ -151,6 +151,24 @@ public class GameManager : MonoBehaviour {
 				}
 			}
 
+			if(Input.GetKeyDown (KeyCode.JoystickButton15)){ // Down
+				Time.timeScale = (Time.timeScale == 1.0F) ? 0.0F : 1.0F;
+			}
+
+		} else if (!rewind){
+
+			// tvOS button
+			if(Input.GetKeyDown(KeyCode.JoystickButton14) || Input.GetKeyDown(KeyCode.JoystickButton19) || Input.GetKeyDown (KeyCode.UpArrow)){
+				NewGame();
+			}
+			if(Input.GetKeyDown (KeyCode.JoystickButton6)){ // Down
+				sensitivity -= Mathf.Max(sensitivity-0.5F, 0.5F);
+			}
+			if(Input.GetKeyDown(KeyCode.JoystickButton4)){ // Up
+				sensitivity -= Mathf.Min(sensitivity+0.5F, 4.0F);
+			}
+
+
 		}
 //		if(!rewind && gameInProgress) timer += Time.deltaTime;
 
@@ -191,6 +209,10 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void OnGUI(){
+		Event e = Event.current;
+		if (e.isKey)
+			Debug.Log("e.keyCode: "+e.keyCode);
+
 		GUI.skin = guiSkin;
 		if(gameInProgress){
 			// Show Time and score
