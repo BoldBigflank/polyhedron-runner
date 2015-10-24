@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -10,15 +12,24 @@ public class GameManager : MonoBehaviour {
 	public static int score;
 	public static Quaternion cubeRotation;
 	public static Vector3 r; // For camera rotation
-	public static float sensitivity;
+	public static int sensitivity;
 	public static bool rewind;
 
 	public GUISkin guiSkin;
 	public GUIStyle lightStyle;
 
-	public Texture soundOn;
-	public Texture soundOff;
-	public Texture play;
+	public Sprite soundOn;
+	public Sprite soundOff;
+	public Sprite play;
+	public Sprite lowSensitivity;
+	public Sprite highSensitivity;
+
+	// UI Stuff
+	public Canvas uiCanvas;
+	public Image soundsImage;
+	public Image controlsImage;
+	public Button playButton;
+	private EventSystem eventSystem;
 
 	// PlayerPrefs settings
 	string PlayerName;
@@ -46,6 +57,11 @@ public class GameManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		eventSystem = GameObject.Find("EventSystem").GetComponent<EventSystem>();
+		uiCanvas.enabled = true;
+		eventSystem.sendNavigationEvents = true;
+		UnityEngine.Apple.TV.Remote.touchesEnabled = false; // For menu stuff
+
 		guiSkin.textField.fontSize = Mathf.Max (Screen.width, Screen.height) / 25;
 		guiSkin.button.fontSize = Mathf.Max (Screen.width, Screen.height) / 25;
 		guiSkin.label.fontSize = Mathf.Max (Screen.width, Screen.height) / 25;
@@ -66,10 +82,10 @@ public class GameManager : MonoBehaviour {
 //		positions = new List<Quaternion>();
 		rotationLog = new Stack<rotationEvent>();
 		if(!PlayerPrefs.HasKey("sensitivity")){
-			PlayerPrefs.SetFloat ("sensitivity", 2.0F);
+			PlayerPrefs.SetInt ("sensitivity", 2);
 		}
 
-		sensitivity = PlayerPrefs.GetFloat("sensitivity");
+		sensitivity = PlayerPrefs.GetInt("sensitivity");
 
 		if(!PlayerPrefs.HasKey("sound")){
 			PlayerPrefs.SetInt ("sound", 1);
@@ -91,9 +107,16 @@ public class GameManager : MonoBehaviour {
 		mainCamera.GetComponent<AudioSource>().Play();
 		logo = GameObject.FindGameObjectWithTag ("Logo");
 		player = GameObject.FindGameObjectWithTag ("Player");
+
+		soundsImage.sprite = (sound) ? soundOn : soundOff;
+		controlsImage.sprite = (sensitivity == 1) ? lowSensitivity : highSensitivity;
 	}
 
-	void NewGame() {
+	public void NewGame() {
+		UnityEngine.Apple.TV.Remote.touchesEnabled = true; // For rotating stuff
+		uiCanvas.enabled = false;
+		eventSystem.sendNavigationEvents = false;
+
 		logo.SetActive (false);
 		player.SetActive (true);
 		player.transform.parent = null;
@@ -113,7 +136,7 @@ public class GameManager : MonoBehaviour {
 		}
 
 		// Save the sensitivity
-		PlayerPrefs.SetFloat("sensitivity", sensitivity);
+		PlayerPrefs.SetInt("sensitivity", sensitivity);
 
 		// Tutorial stuff
 		if(highScore < 3){
@@ -124,14 +147,39 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	void GameOver(){
-		// Currently not used
+	void Hit(){
 		rewind = true;
 		gameInProgress = false;
 		if(score > highScore){
 			highScore = score;
 			PlayerPrefs.SetInt ("high", score);
 		}
+	}
+
+	void GameOver(){
+		UnityEngine.Apple.TV.Remote.touchesEnabled = false; // For menu stuff
+		Debug.Log ("GameOver called");
+		rewind = false;
+		mainCamera.GetComponent<AudioSource>().pitch = 1.0F;
+		logo.SetActive(true);
+		player.transform.parent = null;
+
+		uiCanvas.enabled = true;
+		eventSystem.sendNavigationEvents = true;
+		playButton.Select();
+	}
+
+	public void ToggleSound(){
+		sound = !sound;
+		PlayerPrefs.SetInt("sound", (sound) ? 1:0);
+		AudioListener.volume = (sound) ? 1.0F:0.0F;
+		soundsImage.sprite = (sound) ? soundOn : soundOff;
+	}
+	
+	public void ToggleSensitivity(){
+		sensitivity = (sensitivity == 1) ? 2: 1;
+		PlayerPrefs.SetInt("sensitivity", sensitivity);
+		controlsImage.sprite = (sensitivity == 1) ? lowSensitivity : highSensitivity;
 	}
 	
 	// Update is called once per frame
@@ -154,20 +202,6 @@ public class GameManager : MonoBehaviour {
 			if(Input.GetKeyDown (KeyCode.JoystickButton15)){ // Down
 				Time.timeScale = (Time.timeScale == 1.0F) ? 0.0F : 1.0F;
 			}
-
-		} else if (!rewind){
-
-			// tvOS button
-			if(Input.GetKeyDown(KeyCode.JoystickButton14) || Input.GetKeyDown(KeyCode.JoystickButton19) || Input.GetKeyDown (KeyCode.UpArrow)){
-				NewGame();
-			}
-			if(Input.GetKeyDown (KeyCode.JoystickButton6)){ // Down
-				sensitivity -= Mathf.Max(sensitivity-0.5F, 0.5F);
-			}
-			if(Input.GetKeyDown(KeyCode.JoystickButton4)){ // Up
-				sensitivity -= Mathf.Min(sensitivity+0.5F, 4.0F);
-			}
-
 
 		}
 //		if(!rewind && gameInProgress) timer += Time.deltaTime;
@@ -195,11 +229,7 @@ public class GameManager : MonoBehaviour {
 			float rewindSpeed = (score+1) * 1.75F; //Mathf.Min((score+1) * 2.4F / 4.0F, 19.2F);
 			timer -= rewindSpeed * Time.deltaTime;
 			if(timer <= 0.0F){
-				rewind = false;
-				mainCamera.GetComponent<AudioSource>().pitch = 1.0F;
-				logo.SetActive(true);
-				player.transform.parent = null;
-
+				GameOver(); // Reset the menu and stuff
 			} else {
 				if(rotationLog.Count != 0)
 					cubeRotation = Quaternion.Slerp(cubeRotation, rotationLog.Peek().rotation, Time.deltaTime/(timer - rotationLog.Peek ().time ));
@@ -226,21 +256,21 @@ public class GameManager : MonoBehaviour {
 
 		} else if (!rewind) {
 			GUI.skin.label.normal.textColor = Color.black;
-			// New Game Button
-			if(GUI.Button(new Rect(Screen.width * 0.55F, Screen.height * 0.65F, Screen.width * 0.10F, Screen.height* 0.15F), play)){
-				NewGame ();
-			}
+//			// New Game Button
+//			if(GUI.Button(new Rect(Screen.width * 0.55F, Screen.height * 0.65F, Screen.width * 0.10F, Screen.height* 0.15F), play)){
+//				NewGame ();
+//			}
 
-			Texture soundTexture = (sound) ? soundOn : soundOff;
-			if(GUI.Button(new Rect(Screen.width * 0.05F, Screen.height * 0.85F, Screen.width * 0.05F, Screen.width* 0.05F), soundTexture)){
-				sound = !sound;
-				PlayerPrefs.SetInt("sound", (sound) ? 1:0);
-				AudioListener.volume = (sound) ? 1.0F:0.0F;
-			}
+//			Texture soundTexture = (sound) ? soundOn : soundOff;
+//			if(GUI.Button(new Rect(Screen.width * 0.05F, Screen.height * 0.85F, Screen.width * 0.05F, Screen.width* 0.05F), soundTexture)){
+//				sound = !sound;
+//				PlayerPrefs.SetInt("sound", (sound) ? 1:0);
+//				AudioListener.volume = (sound) ? 1.0F:0.0F;
+//			}
 			
-			if(GUI.Button(new Rect(Screen.width * 0.65F, Screen.height * 0.85F, Screen.width * 0.35F, Screen.width* 0.05F), "More Games")){
-				Application.OpenURL("http://bold-it.com/games-by-alex-swan/");
-			}
+//			if(GUI.Button(new Rect(Screen.width * 0.65F, Screen.height * 0.85F, Screen.width * 0.35F, Screen.width* 0.05F), "More Games")){
+//				Application.OpenURL("http://bold-it.com/games-by-alex-swan/");
+//			}
 			
 
 
@@ -250,7 +280,7 @@ public class GameManager : MonoBehaviour {
 
 //			GUI.Label (new Rect(Screen.width*0.05F, Screen.height*0.1F , Screen.width*0.04F, Screen.height * 0.8F), "S\nE\nN\nS\nI\nT\nI\nV\nI\nT\nY", lightStyle);
 
-			sensitivity = GUI.VerticalSlider(new Rect(Screen.width*0.05F, Screen.height*0.05F , guiSkin.verticalSlider.fixedWidth, guiSkin.verticalSlider.fixedHeight), sensitivity, 4.0F, 0.5F);
+//			sensitivity = GUI.VerticalSlider(new Rect(Screen.width*0.05F, Screen.height*0.05F , guiSkin.verticalSlider.fixedWidth, guiSkin.verticalSlider.fixedHeight), sensitivity, 4.0F, 0.5F);
 			GUI.Label(new Rect(Screen.width * 0.6F, Screen.height * 0.35F, Screen.width * 0.15F, Screen.height* 0.2F), "Last\n"+score.ToString());
 			GUI.Label(new Rect(Screen.width * 0.25F, Screen.height * 0.35F, Screen.width * 0.15F, Screen.height* 0.2F), "Best\n"+highScore.ToString());
 

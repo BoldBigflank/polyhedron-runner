@@ -78,7 +78,7 @@ public class HollowCubeScript : MonoBehaviour {
 			if(GameManager.gameInProgress){
 				other.transform.parent = transform; // Make it a child so it gets sucked in.
 				other.GetComponent<AudioSource>().Play ();
-				gameController.SendMessage ("GameOver");
+				gameController.SendMessage ("Hit");
 			}
 		}
 	}
