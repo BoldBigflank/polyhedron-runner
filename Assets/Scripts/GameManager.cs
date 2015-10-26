@@ -61,6 +61,7 @@ public class GameManager : MonoBehaviour {
 		uiCanvas.enabled = true;
 		eventSystem.sendNavigationEvents = true;
 		UnityEngine.Apple.TV.Remote.touchesEnabled = false; // For menu stuff
+		UnityEngine.Apple.TV.Remote.allowExitToHome = true; // Home button exit
 
 		guiSkin.textField.fontSize = Mathf.Max (Screen.width, Screen.height) / 25;
 		guiSkin.button.fontSize = Mathf.Max (Screen.width, Screen.height) / 25;
@@ -82,7 +83,7 @@ public class GameManager : MonoBehaviour {
 //		positions = new List<Quaternion>();
 		rotationLog = new Stack<rotationEvent>();
 		if(!PlayerPrefs.HasKey("sensitivity")){
-			PlayerPrefs.SetInt ("sensitivity", 2);
+			PlayerPrefs.SetInt ("sensitivity", 1);
 		}
 
 		sensitivity = PlayerPrefs.GetInt("sensitivity");
