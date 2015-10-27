@@ -6,6 +6,7 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour {
 	public static bool gameInProgress;
+	bool paused;
 	public static float timer;
 	public static int numberOfCubes;
 	public static int cubeIndex;
@@ -23,6 +24,7 @@ public class GameManager : MonoBehaviour {
 	public Sprite play;
 	public Sprite lowSensitivity;
 	public Sprite highSensitivity;
+	bool allowExitToHome;
 
 	// UI Stuff
 	public Canvas uiCanvas;
@@ -58,10 +60,6 @@ public class GameManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		eventSystem = GameObject.Find("EventSystem").GetComponent<EventSystem>();
-		uiCanvas.enabled = true;
-		eventSystem.sendNavigationEvents = true;
-		UnityEngine.Apple.TV.Remote.touchesEnabled = false; // For menu stuff
-		UnityEngine.Apple.TV.Remote.allowExitToHome = true; // Home button exit
 
 		guiSkin.textField.fontSize = Mathf.Max (Screen.width, Screen.height) / 25;
 		guiSkin.button.fontSize = Mathf.Max (Screen.width, Screen.height) / 25;
@@ -80,6 +78,7 @@ public class GameManager : MonoBehaviour {
 		rewind = false;
 		timer = 0.0F;
 		gameInProgress = false;
+		paused = false;
 //		positions = new List<Quaternion>();
 		rotationLog = new Stack<rotationEvent>();
 		if(!PlayerPrefs.HasKey("sensitivity")){
@@ -111,20 +110,30 @@ public class GameManager : MonoBehaviour {
 
 		soundsImage.sprite = (sound) ? soundOn : soundOff;
 		controlsImage.sprite = (sensitivity == 1) ? lowSensitivity : highSensitivity;
+		ShowMenu();
+
+	}
+
+	public void StartButton(){
+		if(paused){
+			HideMenu();
+			Time.timeScale = 1.0F;
+			paused = false;
+		} else {
+			NewGame();
+		}
 	}
 
 	public void NewGame() {
-		UnityEngine.Apple.TV.Remote.touchesEnabled = true; // For rotating stuff
-		uiCanvas.enabled = false;
-		eventSystem.sendNavigationEvents = false;
+		HideMenu();
 
-		logo.SetActive (false);
-		player.SetActive (true);
 		player.transform.parent = null;
 		rewind = false;
 		rotationLog.Clear ();
 		rotationLog.Push (new rotationEvent(timer, cubeRotation));
 		gameInProgress = true;
+		paused = false;
+		Time.timeScale = 1.0F;
 		mainCamera.GetComponent<AudioSource>().pitch = 1.0F;
 		timer = 0.0F;
 		score = 0;
@@ -148,6 +157,44 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
+	void ShowMenu(){
+		UnityEngine.Apple.TV.Remote.touchesEnabled = false; // For menu stuff
+		UnityEngine.Apple.TV.Remote.reportAbsoluteDpadValues = false; // For control based on position
+		uiCanvas.enabled = true;
+		eventSystem.sendNavigationEvents = true;
+
+		logo.SetActive (true);
+//		player.SetActive (false);
+
+		playButton.Select();
+		allowExitToHome = true;
+		StartCoroutine( "EnableExitOnMenu");
+	}
+
+	void HideMenu(){
+		UnityEngine.Apple.TV.Remote.touchesEnabled = true; // For rotating stuff
+		uiCanvas.enabled = false;
+		eventSystem.sendNavigationEvents = false;
+		logo.SetActive (false);
+		player.SetActive (true);
+
+		DisableExitOnMenu();
+	}
+
+	IEnumerator EnableExitOnMenu(){
+		float start = Time.realtimeSinceStartup;
+		while (Time.realtimeSinceStartup < start + 0.1F) {
+			yield return null;
+		}
+		
+		UnityEngine.Apple.TV.Remote.allowExitToHome = allowExitToHome;
+	}
+
+	void DisableExitOnMenu(){
+		allowExitToHome = false;
+		UnityEngine.Apple.TV.Remote.allowExitToHome = allowExitToHome;
+	}
+
 	void Hit(){
 		rewind = true;
 		gameInProgress = false;
@@ -158,16 +205,11 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void GameOver(){
-		UnityEngine.Apple.TV.Remote.touchesEnabled = false; // For menu stuff
 		Debug.Log ("GameOver called");
 		rewind = false;
 		mainCamera.GetComponent<AudioSource>().pitch = 1.0F;
-		logo.SetActive(true);
+		ShowMenu();
 		player.transform.parent = null;
-
-		uiCanvas.enabled = true;
-		eventSystem.sendNavigationEvents = true;
-		playButton.Select();
 	}
 
 	public void ToggleSound(){
@@ -188,7 +230,29 @@ public class GameManager : MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.Escape)) 
 			Application.Quit(); 
 
-		if(gameInProgress){
+		if(Input.GetButtonUp ("Menu")){
+			
+			if(gameInProgress && !paused){
+				// Pause button AND Menu button
+				paused = true;
+				Time.timeScale = 0.0F;
+				ShowMenu ();
+			} 
+		}
+		
+		if(Input.GetButtonUp ("Cancel")){
+			
+			if(gameInProgress && !paused){
+				// Pause button AND Menu button
+				paused = true;
+				Time.timeScale = 0.0F;
+				ShowMenu ();
+			} else {
+				StartButton ();
+			}
+		}
+
+		if(!paused && gameInProgress){
 			if(swipeBuffer > 0.0F && highScore < 3 && timer > 3.0F){
 				// Tutorial stuff
 
