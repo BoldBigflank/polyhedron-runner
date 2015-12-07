@@ -150,13 +150,13 @@ public class GameManager : MonoBehaviour {
 		// Save the sensitivity
 		PlayerPrefs.SetInt("sensitivity", sensitivity);
 
-		// Tutorial stuff
-		if(highScore < 3){
-			swipeBuffer = 250.0F;
-			linedUp = false;
-		} else {
-			swipeBuffer = 0.0F;
-		}
+//		// Tutorial stuff
+//		if(highScore < 3){
+//			swipeBuffer = 250.0F;
+//			linedUp = false;
+//		} else {
+//			swipeBuffer = 0.0F;
+//		}
 	}
 
 	void ShowMenu(){
@@ -314,14 +314,14 @@ public class GameManager : MonoBehaviour {
 
 		GUI.skin = guiSkin;
 		if(gameInProgress){
-			// Show Time and score
-			GUI.Label (new Rect(Screen.width/4,Screen.height*0.9F,Screen.width/2,Screen.height*0.1F), score.ToString());
-			GUI.skin.label.normal.textColor = Color.white;
-			if(highScore < 3 && timer < 3.1F){
-				GUI.Label (new Rect(0.0F, 0.0F, Screen.width, Screen.height * 0.2F), "Swipe to Rotate Objects");
-			}else if(highScore < 3 && timer < 4.5F){
-				GUI.Label (new Rect(0.0F, 0.0F, Screen.width, Screen.height * 0.2F), "Find the Gap");
-			}
+//			// Show Time and score
+//			GUI.Label (new Rect(Screen.width/4,Screen.height*0.9F,Screen.width/2,Screen.height*0.1F), score.ToString());
+//			GUI.skin.label.normal.textColor = Color.white;
+//			if(highScore < 3 && timer < 3.1F){
+//				GUI.Label (new Rect(0.0F, 0.0F, Screen.width, Screen.height * 0.2F), "Swipe to Rotate Objects");
+//			}else if(highScore < 3 && timer < 4.5F){
+//				GUI.Label (new Rect(0.0F, 0.0F, Screen.width, Screen.height * 0.2F), "Find the Gap");
+//			}
 
 		} else if (!rewind) {
 			GUI.skin.label.normal.textColor = Color.black;
