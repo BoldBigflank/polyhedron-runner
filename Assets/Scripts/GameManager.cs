@@ -158,8 +158,8 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void ShowMenu(){
-		UnityEngine.Apple.TV.Remote.touchesEnabled = false; // For menu stuff
-		UnityEngine.Apple.TV.Remote.reportAbsoluteDpadValues = false; // For control based on position
+//		UnityEngine.Apple.TV.Remote.touchesEnabled = false; // For menu stuff
+//		UnityEngine.Apple.TV.Remote.reportAbsoluteDpadValues = false; // For control based on position
 		uiCanvas.enabled = true;
 		eventSystem.sendNavigationEvents = true;
 
@@ -172,7 +172,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void HideMenu(){
-		UnityEngine.Apple.TV.Remote.touchesEnabled = true; // For rotating stuff
+//		UnityEngine.Apple.TV.Remote.touchesEnabled = true; // For rotating stuff
 		uiCanvas.enabled = false;
 		eventSystem.sendNavigationEvents = false;
 		logo.SetActive (false);
@@ -187,12 +187,12 @@ public class GameManager : MonoBehaviour {
 			yield return null;
 		}
 		
-		UnityEngine.Apple.TV.Remote.allowExitToHome = allowExitToHome;
+//		UnityEngine.Apple.TV.Remote.allowExitToHome = allowExitToHome;
 	}
 
 	void DisableExitOnMenu(){
 		allowExitToHome = false;
-		UnityEngine.Apple.TV.Remote.allowExitToHome = allowExitToHome;
+//		UnityEngine.Apple.TV.Remote.allowExitToHome = allowExitToHome;
 	}
 
 	void Hit(){
