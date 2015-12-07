@@ -48,6 +48,7 @@ public class HollowCubeScript : MonoBehaviour {
 			originalColor = GetComponent<Renderer>().material.color;
 			GetComponent<Renderer>().material.SetColor ("_Color", Color.white);
 			GetComponent<Renderer>().material.SetColor ("_SpecColor", Color.white);
+//			gameObject.GetComponent<Collider>().enabled = false;
 			isModifiedColor = true;
 			passed = true;
 			GameManager.numberOfCubes--; // Currently not deleting cubes, so subtract when they've passed
@@ -55,6 +56,7 @@ public class HollowCubeScript : MonoBehaviour {
 		if(GameManager.rewind && isModifiedColor){
 			GetComponent<Renderer>().material.SetColor("_Color", originalColor);
 			GetComponent<Renderer>().material.SetColor("_SpecColor", originalColor);
+//			gameObject.GetComponent<Collider>().enabled = true;
 			isModifiedColor = false;
 		}
 
@@ -76,7 +78,7 @@ public class HollowCubeScript : MonoBehaviour {
 //		Debug.Log ("HollowCube OnTriggerEnter" + other.gameObject.tag);
 		if(other.gameObject.tag == "Player"){
 			if(GameManager.gameInProgress){
-				other.transform.parent = transform; // Make it a child so it gets sucked in.
+//				other.transform.parent = transform; // Make it a child so it gets sucked in.
 				other.GetComponent<AudioSource>().Play ();
 				gameController.SendMessage ("Hit");
 			}

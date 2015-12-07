@@ -2,6 +2,7 @@
 using System.Collections;
 
 public class CardboardOrbit : MonoBehaviour {
+	public GameObject player;
 	
 	public Transform target;
 	public float distance = 10.0f;
@@ -37,6 +38,7 @@ public class CardboardOrbit : MonoBehaviour {
 			
 			//			transform.rotation = rotation;
 			transform.position = position;
+			player.transform.localPosition = Vector3.zero;
 		}
 	}
 }

@@ -31,6 +31,8 @@ public class GameManager : MonoBehaviour {
 	public Image soundsImage;
 	public Image controlsImage;
 	public Button playButton;
+	public Text bestText;
+	public Text lastText;
 	private EventSystem eventSystem;
 
 	// PlayerPrefs settings
@@ -100,7 +102,7 @@ public class GameManager : MonoBehaviour {
 		}
 
 		highScore = PlayerPrefs.GetInt ("high");
-//		highScore = 0; // DEBUG PLEASE REMOVE
+		bestText.text = "Best\n" + highScore;
 
 		mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
 		// Start the music here
@@ -127,7 +129,7 @@ public class GameManager : MonoBehaviour {
 	public void NewGame() {
 		HideMenu();
 
-		player.transform.parent = null;
+//		player.transform.parent = mainCamera.transform;
 		rewind = false;
 		rotationLog.Clear ();
 		rotationLog.Push (new rotationEvent(timer, cubeRotation));
@@ -201,6 +203,7 @@ public class GameManager : MonoBehaviour {
 		if(score > highScore){
 			highScore = score;
 			PlayerPrefs.SetInt ("high", score);
+			bestText.text = "Best\n" + score;
 		}
 	}
 
@@ -209,7 +212,8 @@ public class GameManager : MonoBehaviour {
 		rewind = false;
 		mainCamera.GetComponent<AudioSource>().pitch = 1.0F;
 		ShowMenu();
-		player.transform.parent = null;
+//		player.transform.parent = null;
+		lastText.text = "Last\n"+ score;
 	}
 
 	public void ToggleSound(){
@@ -346,8 +350,8 @@ public class GameManager : MonoBehaviour {
 //			GUI.Label (new Rect(Screen.width*0.05F, Screen.height*0.1F , Screen.width*0.04F, Screen.height * 0.8F), "S\nE\nN\nS\nI\nT\nI\nV\nI\nT\nY", lightStyle);
 
 //			sensitivity = GUI.VerticalSlider(new Rect(Screen.width*0.05F, Screen.height*0.05F , guiSkin.verticalSlider.fixedWidth, guiSkin.verticalSlider.fixedHeight), sensitivity, 4.0F, 0.5F);
-			GUI.Label(new Rect(Screen.width * 0.6F, Screen.height * 0.35F, Screen.width * 0.15F, Screen.height* 0.2F), "Last\n"+score.ToString());
-			GUI.Label(new Rect(Screen.width * 0.25F, Screen.height * 0.35F, Screen.width * 0.15F, Screen.height* 0.2F), "Best\n"+highScore.ToString());
+//			GUI.Label(new Rect(Screen.width * 0.6F, Screen.height * 0.35F, Screen.width * 0.15F, Screen.height* 0.2F), "Last\n"+score.ToString());
+//			GUI.Label(new Rect(Screen.width * 0.25F, Screen.height * 0.35F, Screen.width * 0.15F, Screen.height* 0.2F), "Best\n"+highScore.ToString());
 
 		}
 	}

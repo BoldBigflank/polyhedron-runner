@@ -18,9 +18,9 @@ public class PlayerRotation : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		transform.Rotate( rotationDelta * Time.deltaTime);
-		if(GameManager.gameInProgress){
-			transform.position = startPosition;
-			transform.localScale = startScale;
-		}
+//		if(GameManager.gameInProgress){
+//			transform.position = startPosition;
+//			transform.localScale = startScale;
+//		}
 	}
 }
