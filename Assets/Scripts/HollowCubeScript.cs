@@ -25,10 +25,10 @@ public class HollowCubeScript : MonoBehaviour {
 	void Reset(){
 		aliveTime = 0.0F;
 		transform.localScale = Vector3.zero;
-		float x = Random.Range(0,360);
+//		float x = Random.Range(0,360);
 		float y = Random.Range(0,360);
-		float z = Random.Range(0,360);
-		rotationOffset = Quaternion.Euler (new Vector3(x, y, z));
+		float z = Random.Range(-45,45);
+		rotationOffset = Quaternion.Euler (new Vector3(0.0F, y, z));
 		collided = false;
 	}
 	
@@ -43,7 +43,7 @@ public class HollowCubeScript : MonoBehaviour {
 		transform.position = Vector3.zero;
 
 
-		if(scale > 3.0F && !passed){ // Past the 
+		if(scale > 2.0F && !passed){ // Past the 
 			GameManager.score++;
 			originalColor = GetComponent<Renderer>().material.color;
 			GetComponent<Renderer>().material.SetColor ("_Color", Color.white);
