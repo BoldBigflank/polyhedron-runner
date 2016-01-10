@@ -7,7 +7,6 @@ public class RotateOnTouch : MonoBehaviour {
 	float v;
 	float horizontalSpeed = 1.0F;
 	float verticalSpeed = 1.0F;
-//	float damping = 24.0F;
 
 	Vector3 lastMousePosition;
 	GameObject mainCamera;
@@ -26,11 +25,9 @@ public class RotateOnTouch : MonoBehaviour {
 			Touch touch = Input.GetTouch(0);
 			if(touch.phase == TouchPhase.Moved){
 				h = horizontalSpeed * touch.deltaPosition.x * ((float)GameManager.sensitivity / 4.0F);
-//				transform.Rotate (0, -h, 0, Space.World);
 				transform.RotateAround(transform.position, mainCamera.transform.up, -h);
 
 				v = verticalSpeed * touch.deltaPosition.y * ((float)GameManager.sensitivity / 4.0F);
-//				transform.Rotate (v, 0, 0, Space.World);
 				transform.RotateAround (transform.position, mainCamera.transform.right, v);
 			}
 		} else if (Input.GetMouseButton(0) == true) { // Mouse control
@@ -40,46 +37,7 @@ public class RotateOnTouch : MonoBehaviour {
 			lastMousePosition = Input.mousePosition;
 
 		} 
-		// Arrow keys pretending they're Horizontal/Vertical axis
-//		transform.Rotate(Vector3.down * (Input.GetAxis ("Horizontal")), Space.World);
-//		transform.Rotate(Vector3.right * (Input.GetAxis("Vertical")), Space.World);
-
-//		else {  // Square it away
-//			Vector3 newTransform = new Vector3 ( 
-//			                        Mathf.RoundToInt( transform.rotation.eulerAngles.x / 90.0F ) * 90.0F, 
-//			                        Mathf.RoundToInt( transform.rotation.eulerAngles.y / 90.0F ) * 90.0F, 
-//			                        Mathf.RoundToInt( transform.rotation.eulerAngles.z / 90.0F ) * 90.0F);
-////			transform.localEulerAngles = newTransform;
-//			Debug.Log("no touches" + transform.rotation.eulerAngles.x + " " + transform.rotation.eulerAngles.y + transform.rotation.eulerAngles.z);
-//			transform.rotation = Quaternion.Slerp (transform.rotation, Quaternion.Euler(newTransform), Time.deltaTime * damping);
-//
-//		}
 		GameManager.cubeRotation = transform.rotation;
 
 	}
 }
-
-
-//#pragma strict
-//
-//private var h : float;
-//private var v : float;
-//private var horozontalSpeed : float = 2.0;
-//private var verticalSpeed : float = 2.0;
-//
-//function Update()
-//{
-//	if (Input.touchCount == 1)
-//	{
-//		var touch : Touch = Input.GetTouch(0);
-//		
-//		if (touch.phase == TouchPhase.Moved)
-//		{
-//			h = horozontalSpeed * touch.deltaPosition.x ;
-//			transform.Rotate( 0, -h, 0, Space.World );
-//			
-//			v = verticalSpeed * touch.deltaPosition.y ;
-//			transform.Rotate( v, 0, 0, Space.World );
-//		}
-//	}
-//}

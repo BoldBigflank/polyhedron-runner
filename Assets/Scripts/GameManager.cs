@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour {
 	public static Vector3 r; // For camera rotation
 	public static int sensitivity;
 	public static bool rewind;
+	
+	public Cardboard cardboardScript;
 
 	public GUISkin guiSkin;
 	public GUIStyle lightStyle;
@@ -39,6 +41,7 @@ public class GameManager : MonoBehaviour {
 	string PlayerName;
 	int highScore;
 	bool sound;
+	bool vrMode;
 
 	float swipeBuffer;
 	Vector3 lastMousePosition;
@@ -96,6 +99,9 @@ public class GameManager : MonoBehaviour {
 		sound = PlayerPrefs.GetInt("sound") == 1;
 		AudioListener.volume = (sound) ? 1.0F : 0.0F;
 
+		if(!PlayerPrefs.HasKey("vrMode")){
+			PlayerPrefs.SetInt ("vrMode", 0);
+		}
 
 		if(!PlayerPrefs.HasKey("high")){
 			PlayerPrefs.SetInt ("high", 0);
@@ -227,6 +233,13 @@ public class GameManager : MonoBehaviour {
 		sensitivity = (sensitivity == 1) ? 2: 1;
 		PlayerPrefs.SetInt("sensitivity", sensitivity);
 		controlsImage.sprite = (sensitivity == 1) ? lowSensitivity : highSensitivity;
+	}
+	
+	public void ToggleVR(){
+		vrMode = !vrMode;
+		PlayerPrefs.SetInt("vrMode", (vrMode) ? 1:0 );
+		// Change the Cardboard script setting
+		cardboardScript.VRModeEnabled = vrMode;
 	}
 	
 	// Update is called once per frame
