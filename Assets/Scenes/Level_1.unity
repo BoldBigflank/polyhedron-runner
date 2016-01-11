@@ -176,7 +176,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: fbc143fc5c00b4c36915c0e393f36823, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: .125
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: fbc143fc5c00b4c36915c0e393f36823, type: 3}
       propertyPath: m_LocalRotation.x
@@ -258,7 +258,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: 691bf3e71b387435bb6304e28d671b2f, type: 2}
       propertyPath: m_RootOrder
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 11400004, guid: 691bf3e71b387435bb6304e28d671b2f, type: 2}
       propertyPath: target
@@ -282,6 +282,10 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 2000004, guid: 691bf3e71b387435bb6304e28d671b2f, type: 2}
       propertyPath: m_BackGroundColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2000004, guid: 691bf3e71b387435bb6304e28d671b2f, type: 2}
+      propertyPath: near clip plane
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
@@ -1264,8 +1268,8 @@ MeshRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1574076176}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_Materials:
   - {fileID: 2100000, guid: d57c49e3f1c7646f5bef8d73c1bc5cd8, type: 2}
   m_SubsetIndices: 
@@ -1389,6 +1393,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08d6879e9bf8c4ede980b61ddfe6a881, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1574076187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1574076176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a2a6a97d80182d4e9663a4c7706544b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  camera: {fileID: 1123029902}
+  bigR: .75
+  r: 1
+  a: 1
+  moveSpeed: .100000001
+  normalDistance: 2
+  vrDistance: .5
 --- !u!1 &1776348540
 GameObject:
   m_ObjectHideFlags: 0
@@ -1475,7 +1497,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b150a5c748d553342944a7231c114e9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 100002, guid: fbc143fc5c00b4c36915c0e393f36823, type: 3}
+  player: {fileID: 1574076176}
   target: {fileID: 1122377306}
   distance: 5
 --- !u!1 &1884060791
@@ -1836,7 +1858,7 @@ MonoBehaviour:
   highSensitivity: {fileID: 21300000, guid: eb1716cb034874ec2ac0b142babc5f50, type: 3}
   uiCanvas: {fileID: 1958369437}
   soundsImage: {fileID: 1776348541}
-  controlsImage: {fileID: 643562077}
+  controlsImage: {fileID: 0}
   playButton: {fileID: 2042983290}
   bestText: {fileID: 111192868}
   lastText: {fileID: 1923269964}

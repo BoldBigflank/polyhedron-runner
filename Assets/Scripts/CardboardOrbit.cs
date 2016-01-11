@@ -38,7 +38,12 @@ public class CardboardOrbit : MonoBehaviour {
 			
 			//			transform.rotation = rotation;
 			transform.position = position;
-			player.transform.localPosition = Vector3.zero;
+//			Vector3 playerPosition = player.transform.localPosition;
+//			if(GameManager.vrMode)
+//				player.transform.localPosition = new Vector3(playerPosition.x, playerPosition.y, 3.0F);
+//			else {
+//				player.transform.localPosition = Vector3.zero;
+//			}
 		}
 	}
 }

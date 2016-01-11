@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour {
 	string PlayerName;
 	int highScore;
 	bool sound;
-	bool vrMode;
+	public static bool vrMode;
 
 	float swipeBuffer;
 	Vector3 lastMousePosition;
@@ -117,7 +117,7 @@ public class GameManager : MonoBehaviour {
 		player = GameObject.FindGameObjectWithTag ("Player");
 
 		soundsImage.sprite = (sound) ? soundOn : soundOff;
-		controlsImage.sprite = (sensitivity == 1) ? lowSensitivity : highSensitivity;
+//		controlsImage.sprite = (sensitivity == 1) ? lowSensitivity : highSensitivity;
 		ShowMenu();
 
 	}

@@ -19,7 +19,7 @@ public class RotateOnTouch : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(!GameManager.gameInProgress) { return;}
+//		if(!GameManager.gameInProgress) { return;}
 		transform.rotation = GameManager.cubeRotation;
 		if(Input.touchCount == 1){
 			Touch touch = Input.GetTouch(0);
