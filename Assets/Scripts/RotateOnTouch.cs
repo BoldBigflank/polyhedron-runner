@@ -9,6 +9,10 @@ public class RotateOnTouch : MonoBehaviour {
 	float verticalSpeed = 1.0F;
 
 	Vector3 lastMousePosition;
+	float mouseX = 0;
+	float mouseY = 0;
+	float mouseZ = 0;
+	
 	GameObject mainCamera;
 
 	// Use this for initialization
@@ -19,6 +23,7 @@ public class RotateOnTouch : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		Quaternion rot;
 //		if(!GameManager.gameInProgress) { return;}
 		transform.rotation = GameManager.cubeRotation;
 		if(Input.touchCount == 1){
@@ -32,11 +37,23 @@ public class RotateOnTouch : MonoBehaviour {
 			}
 		} else if (Input.GetMouseButton(0) == true) { // Mouse control
 			if(Input.GetMouseButtonDown(0)){ lastMousePosition = Input.mousePosition;}
-			transform.Rotate(Vector3.down * (Input.mousePosition.x - lastMousePosition.x), Space.World);
-			transform.Rotate(Vector3.right * (Input.mousePosition.y - lastMousePosition.y), Space.World);
+//			transform.Rotate(Vector3.down * (Input.mousePosition.x - lastMousePosition.x), Space.World);
+//			transform.Rotate(Vector3.right * (Input.mousePosition.y - lastMousePosition.y), Space.World);
 			lastMousePosition = Input.mousePosition;
-
+			
+			mouseX += Input.GetAxis("Mouse X") * 5;
+			if (mouseX <= -180) {
+				mouseX += 360;
+			} else if (mouseX > 180) {
+				mouseX -= 360;
+			}
+			mouseY -= Input.GetAxis("Mouse Y") * 2.4f;
+			mouseY = Mathf.Clamp(mouseY, -85, 85);
+			
+			
 		} 
+		rot = Quaternion.Euler(mouseY, mouseX, mouseZ);
+		
 		GameManager.cubeRotation = transform.rotation;
 
 	}

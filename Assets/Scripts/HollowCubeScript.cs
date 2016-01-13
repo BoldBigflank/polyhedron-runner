@@ -60,19 +60,8 @@ public class HollowCubeScript : MonoBehaviour {
 			isModifiedColor = false;
 		}
 
-//		if(scale > 2000.0F){
-//			GameManager.numberOfCubes--;
-//			Destroy(gameObject);
-//		}
 	}
 
-//	void OnCollisionEnter(Collision collision){
-//		Debug.Log ("Collision!" + collision.transform.tag);
-//	}
-//
-//	void OnCollisionExit(Collision collision){
-//		Debug.Log ("CollisionExit" + collision.transform.tag);
-//	}
 
 	void OnTriggerEnter(Collider other){
 //		Debug.Log ("HollowCube OnTriggerEnter" + other.gameObject.tag);

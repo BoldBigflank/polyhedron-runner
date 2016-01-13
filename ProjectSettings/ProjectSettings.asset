@@ -5,7 +5,7 @@ PlayerSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 7
   AndroidProfiler: 0
-  defaultScreenOrientation: 4
+  defaultScreenOrientation: 3
   targetDevice: 3
   targetResolution: 0
   useOnDemandResources: 0
@@ -165,9 +165,9 @@ PlayerSettings:
   - m_BuildTarget: 
     m_Icons:
     - serializedVersion: 2
-      m_Icon: {fileID: 0}
-      m_Width: 13844
-      m_Height: 13844
+      m_Icon: {fileID: 2800000, guid: 49ffe0c2413514d9bb516c63acc33ee8, type: 3}
+      m_Width: 128
+      m_Height: 128
   m_BuildTargetBatching:
   - m_BuildTarget: iPhone
     m_StaticBatching: 1

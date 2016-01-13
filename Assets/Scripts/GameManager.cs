@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour {
 	public static bool rewind;
 	
 	public Cardboard cardboardScript;
+	public CardboardHead cardboardHeadScript;
 
 	public GUISkin guiSkin;
 	public GUIStyle lightStyle;
@@ -64,6 +65,7 @@ public class GameManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+//		cardboardScript = GameObject.Find("Cardboard").GetComponent<Cardboard>();
 		eventSystem = GameObject.Find("EventSystem").GetComponent<EventSystem>();
 
 		guiSkin.textField.fontSize = Mathf.Max (Screen.width, Screen.height) / 25;
@@ -100,8 +102,11 @@ public class GameManager : MonoBehaviour {
 		AudioListener.volume = (sound) ? 1.0F : 0.0F;
 
 		if(!PlayerPrefs.HasKey("vrMode")){
-			PlayerPrefs.SetInt ("vrMode", 0);
+			PlayerPrefs.SetInt ("vrMode", 1);
 		}
+		
+		vrMode = PlayerPrefs.GetInt ("vrMode") == 1;
+		SetVRMode();
 
 		if(!PlayerPrefs.HasKey("high")){
 			PlayerPrefs.SetInt ("high", 0);
@@ -238,8 +243,13 @@ public class GameManager : MonoBehaviour {
 	public void ToggleVR(){
 		vrMode = !vrMode;
 		PlayerPrefs.SetInt("vrMode", (vrMode) ? 1:0 );
-		// Change the Cardboard script setting
+		SetVRMode ();
+	}
+	
+	void SetVRMode(){
+		
 		cardboardScript.VRModeEnabled = vrMode;
+		cardboardHeadScript.trackRotation = vrMode;
 	}
 	
 	// Update is called once per frame
