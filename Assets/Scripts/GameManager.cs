@@ -64,9 +64,11 @@ public class GameManager : MonoBehaviour {
 
 	static Stack<rotationEvent> rotationLog;
 	public float rotationEventInterval = .125F;
+	public GameObject constructor;
 	GameObject mainCamera;
 	GameObject logo;
 	GameObject player;
+	
 
 	// Use this for initialization
 	void Start () {
@@ -185,6 +187,7 @@ public class GameManager : MonoBehaviour {
 		eventSystem.sendNavigationEvents = true;
 
 		logo.SetActive (true);
+		constructor.SetActive(false);
 //		player.SetActive (false);
 
 		playButton.Select();
@@ -197,6 +200,7 @@ public class GameManager : MonoBehaviour {
 		uiCanvas.enabled = false;
 		eventSystem.sendNavigationEvents = false;
 		logo.SetActive (false);
+		constructor.SetActive(true);
 		player.SetActive (true);
 
 		DisableExitOnMenu();
