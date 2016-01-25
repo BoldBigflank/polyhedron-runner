@@ -33,6 +33,8 @@ public class GameManager : MonoBehaviour {
 	public Canvas uiCanvas;
 	public Image soundsImage;
 	public Image controlsImage;
+	public Text controlsText;
+	public Button controlButton;
 	public Button playButton;
 	public Text bestText;
 	public Text lastText;
@@ -67,6 +69,10 @@ public class GameManager : MonoBehaviour {
 	void Start () {
 //		cardboardScript = GameObject.Find("Cardboard").GetComponent<Cardboard>();
 		eventSystem = GameObject.Find("EventSystem").GetComponent<EventSystem>();
+		mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+		logo = GameObject.FindGameObjectWithTag ("Logo");
+		player = GameObject.FindGameObjectWithTag ("Player");
+		
 
 		guiSkin.textField.fontSize = Mathf.Max (Screen.width, Screen.height) / 25;
 		guiSkin.button.fontSize = Mathf.Max (Screen.width, Screen.height) / 25;
@@ -115,14 +121,12 @@ public class GameManager : MonoBehaviour {
 		highScore = PlayerPrefs.GetInt ("high");
 		bestText.text = "Best\n" + highScore;
 
-		mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+		
 		// Start the music here
 		mainCamera.GetComponent<AudioSource>().Play();
-		logo = GameObject.FindGameObjectWithTag ("Logo");
-		player = GameObject.FindGameObjectWithTag ("Player");
-
 		soundsImage.sprite = (sound) ? soundOn : soundOff;
-//		controlsImage.sprite = (sensitivity == 1) ? lowSensitivity : highSensitivity;
+		controlsImage.sprite = (sensitivity == 1) ? lowSensitivity : highSensitivity;
+		controlsText.text = (sensitivity == 1) ? "Low sensitivity" : "High sensitivity";
 		ShowMenu();
 
 	}
@@ -235,9 +239,10 @@ public class GameManager : MonoBehaviour {
 	}
 	
 	public void ToggleSensitivity(){
-		sensitivity = (sensitivity == 1) ? 2: 1;
+		sensitivity = (sensitivity == 1) ? 4: 1;
 		PlayerPrefs.SetInt("sensitivity", sensitivity);
 		controlsImage.sprite = (sensitivity == 1) ? lowSensitivity : highSensitivity;
+		controlsText.text = (sensitivity == 1) ? "Low sensitivity" : "High sensitivity";
 	}
 	
 	public void ToggleVR(){
@@ -250,15 +255,31 @@ public class GameManager : MonoBehaviour {
 		
 		cardboardScript.VRModeEnabled = vrMode;
 		cardboardHeadScript.trackRotation = vrMode;
+		controlButton.transform.localScale = (!vrMode ) ? Vector3.one : Vector3.zero;
+		
+		Debug.Log ("controlbutton.enabled " + controlButton.enabled);
+		
+		if(!vrMode){
+			logo.transform.LookAt(mainCamera.transform, mainCamera.transform.up);
+		} else {
+			logo.transform.rotation = Quaternion.Euler(0.0f, 180.0f, 0.0f);
+		}
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKeyDown(KeyCode.Escape)) 
-			Application.Quit(); 
+	
+		if (Input.GetKeyDown(KeyCode.Escape)) {
+
+			if(vrMode){
+				ToggleVR();
+			} else {
+				Application.Quit(); 
+			}
+		}
 
 		if(Input.GetButtonUp ("Menu")){
-			
+
 			if(gameInProgress && !paused){
 				// Pause button AND Menu button
 				paused = true;
@@ -268,7 +289,7 @@ public class GameManager : MonoBehaviour {
 		}
 		
 		if(Input.GetButtonUp ("Cancel")){
-			
+
 			if(gameInProgress && !paused){
 				// Pause button AND Menu button
 				paused = true;
@@ -331,9 +352,9 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void OnGUI(){
-		Event e = Event.current;
-		if (e.isKey)
-			Debug.Log("e.keyCode: "+e.keyCode);
+//		Event e = Event.current;
+//		if (e.isKey)
+//			Debug.Log("e.keyCode: "+e.keyCode);
 
 		GUI.skin = guiSkin;
 		if(gameInProgress){
