@@ -5,16 +5,19 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour {
-	public static bool gameInProgress;
+	public static GameManager current;
+
+	public bool gameInProgress;
 	bool paused;
-	public static float timer;
-	public static int numberOfCubes;
-	public static int cubeIndex;
-	public static int score;
-	public static Quaternion cubeRotation;
-	public static Vector3 r; // For camera rotation
-	public static int sensitivity;
-	public static bool rewind;
+	public float timer;
+	public int numberOfCubes;
+	public int cubeIndex;
+	public int score;
+	public Quaternion cubeRotation;
+	public Vector3 r; // For camera rotation
+	public int sensitivity;
+	public bool rewind;
+	public ParticleSystem particles;
 	
 	public Cardboard cardboardScript;
 	public CardboardHead cardboardHeadScript;
@@ -44,7 +47,7 @@ public class GameManager : MonoBehaviour {
 	string PlayerName;
 	int highScore;
 	bool sound;
-	public static bool vrMode;
+	public bool vrMode;
 
 	float swipeBuffer;
 	Vector3 lastMousePosition;
@@ -67,6 +70,7 @@ public class GameManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		current = this;
 //		cardboardScript = GameObject.Find("Cardboard").GetComponent<Cardboard>();
 		eventSystem = GameObject.Find("EventSystem").GetComponent<EventSystem>();
 		mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
@@ -212,6 +216,11 @@ public class GameManager : MonoBehaviour {
 //		UnityEngine.Apple.TV.Remote.allowExitToHome = allowExitToHome;
 	}
 
+	public void SetColor (Color cubeColor)
+	{
+		particles.startColor = cubeColor;
+	}
+
 	void Hit(){
 		rewind = true;
 		gameInProgress = false;
@@ -318,7 +327,8 @@ public class GameManager : MonoBehaviour {
 
 		}
 //		if(!rewind && gameInProgress) timer += Time.deltaTime;
-
+		
+		
 		if(Input.touchCount == 1){
 			Touch touch = Input.GetTouch(0);
 			if(touch.phase == TouchPhase.Moved){

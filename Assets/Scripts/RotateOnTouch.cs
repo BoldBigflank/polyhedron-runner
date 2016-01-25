@@ -24,15 +24,15 @@ public class RotateOnTouch : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		Quaternion rot;
-//		if(!GameManager.gameInProgress) { return;}
-		transform.rotation = GameManager.cubeRotation;
+//		if(!GameManager.current.gameInProgress) { return;}
+		transform.rotation = GameManager.current.cubeRotation;
 		if(Input.touchCount == 1){
 			Touch touch = Input.GetTouch(0);
 			if(touch.phase == TouchPhase.Moved){
-				h = horizontalSpeed * touch.deltaPosition.x * ((float)GameManager.sensitivity / 4.0F);
+				h = horizontalSpeed * touch.deltaPosition.x * ((float)GameManager.current.sensitivity / 4.0F);
 				transform.RotateAround(transform.position, mainCamera.transform.up, -h);
 
-				v = verticalSpeed * touch.deltaPosition.y * ((float)GameManager.sensitivity / 4.0F);
+				v = verticalSpeed * touch.deltaPosition.y * ((float)GameManager.current.sensitivity / 4.0F);
 				transform.RotateAround (transform.position, mainCamera.transform.right, v);
 			}
 		} else if (Input.GetMouseButton(0) == true) { // Mouse control
@@ -54,7 +54,7 @@ public class RotateOnTouch : MonoBehaviour {
 		} 
 		rot = Quaternion.Euler(mouseY, mouseX, mouseZ);
 		
-		GameManager.cubeRotation = transform.rotation;
+		GameManager.current.cubeRotation = transform.rotation;
 
 	}
 }

@@ -13,7 +13,7 @@ public class CameraTouchScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(!GameManager.gameInProgress) { return;}
+		if(!GameManager.current.gameInProgress) { return;}
 		if(Input.touchCount == 1){
 			Touch touch = Input.GetTouch(0);
 			if(touch.phase == TouchPhase.Moved){
@@ -27,7 +27,7 @@ public class CameraTouchScript : MonoBehaviour {
 //				v = verticalSpeed * touch.deltaPosition.y;
 //				transform.Rotate (v, 0, 0, Space.World);
 
-				GameManager.r = transform.rotation.eulerAngles;
+				GameManager.current.r = transform.rotation.eulerAngles;
 			} else if (touch.phase == TouchPhase.Stationary){
 				transform.position = Vector3.Lerp(transform.position, restPosition, Time.deltaTime * damping);
 			}

@@ -15,7 +15,7 @@ public class ClearPointScript : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other){
 		if(other.gameObject.tag == "Player" && !passed){
-			GameManager.score++;
+			GameManager.current.score++;
 
 			transform.parent.GetComponent<Renderer>().material.SetColor ("_Color", Color.white);
 			transform.parent.GetComponent<Renderer>().material.SetColor ("_SpecColor", Color.white);

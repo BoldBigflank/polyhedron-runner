@@ -24,7 +24,7 @@ public class PlayerPosition : MonoBehaviour {
 	
 	// Update is called once per frame
 	void LateUpdate () {
-		if(GameManager.vrMode || !GameManager.gameInProgress){
+		if(GameManager.current.vrMode || !GameManager.current.gameInProgress){
 			// No spirograph
 			camera.transform.localPosition = Vector3.back * vrDistance;
 			

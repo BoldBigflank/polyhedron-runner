@@ -13,7 +13,7 @@ public class PlayerCollisionScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-		if(!GameManager.gameInProgress || GameManager.rewind) return;
+		if(!GameManager.current.gameInProgress || GameManager.current.rewind) return;
 //		Debug.Log (transform.position);
 
 		// Check for collisions

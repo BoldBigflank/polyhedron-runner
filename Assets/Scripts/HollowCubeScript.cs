@@ -35,25 +35,25 @@ public class HollowCubeScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		aliveTime += Time.deltaTime;
-		float scale =  Mathf.Pow(2, 1.6F*(GameManager.timer - timeOffset) );
+		float scale =  Mathf.Pow(2, 1.6F*(GameManager.current.timer - timeOffset) );
 		if(scale > maxScale) scale = 0.0F;
 //		scale = Mathf.Min(scale, maxScale);
 		transform.localScale = new Vector3(scale, scale, scale);
-		transform.rotation =  GameManager.cubeRotation * rotationOffset;
+		transform.rotation =  GameManager.current.cubeRotation * rotationOffset;
 		transform.position = Vector3.zero;
 
 
 		if(scale > 2.0F && !passed){ // Past the 
-			GameManager.score++;
+			GameManager.current.score++;
 			originalColor = GetComponent<Renderer>().material.color;
 			GetComponent<Renderer>().material.SetColor ("_Color", Color.white);
 			GetComponent<Renderer>().material.SetColor ("_SpecColor", Color.white);
 //			gameObject.GetComponent<Collider>().enabled = false;
 			isModifiedColor = true;
 			passed = true;
-			GameManager.numberOfCubes--; // Currently not deleting cubes, so subtract when they've passed
+			GameManager.current.numberOfCubes--; // Currently not deleting cubes, so subtract when they've passed
 		}
-		if(GameManager.rewind && isModifiedColor){
+		if(GameManager.current.rewind && isModifiedColor){
 			GetComponent<Renderer>().material.SetColor("_Color", originalColor);
 			GetComponent<Renderer>().material.SetColor("_SpecColor", originalColor);
 //			gameObject.GetComponent<Collider>().enabled = true;
@@ -66,7 +66,7 @@ public class HollowCubeScript : MonoBehaviour {
 	void OnTriggerEnter(Collider other){
 //		Debug.Log ("HollowCube OnTriggerEnter" + other.gameObject.tag);
 		if(other.gameObject.tag == "Player"){
-			if(GameManager.gameInProgress){
+			if(GameManager.current.gameInProgress){
 //				other.transform.parent = transform; // Make it a child so it gets sucked in.
 				other.GetComponent<AudioSource>().Play ();
 				gameController.SendMessage ("Hit");

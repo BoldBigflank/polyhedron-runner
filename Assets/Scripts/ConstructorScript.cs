@@ -50,23 +50,24 @@ public class ConstructorScript : MonoBehaviour {
 	void AddCube(){
 
 		GameObject c = (GameObject)Instantiate(shapes[Random.Range(0, shapes.Length)]);
-		c.GetComponent<HollowCubeScript>().timeOffset = (GameManager.cubeIndex) * (2.57F) + 4 ;
-		Color cubeColor = colors[  GameManager.cubeIndex % colors.Count];
+		c.GetComponent<HollowCubeScript>().timeOffset = (GameManager.current.cubeIndex) * (2.57F) + 4 ;
+		Color cubeColor = colors[  GameManager.current.cubeIndex % colors.Count];
+		GameManager.current.SetColor(cubeColor);
 		c.GetComponent<Renderer>().material.SetColor ("_Color", cubeColor);
 		c.transform.parent = gameObject.transform;
 //		c.GetComponent<Renderer>().material.SetColor ("_SpecColor", cubeColor);
 //		c.GetComponent<Renderer>().material.SetColor ("_ReflectColor", cubeColor);
 
-		GameManager.cubeIndex++;
-		GameManager.numberOfCubes++;
+		GameManager.current.cubeIndex++;
+		GameManager.current.numberOfCubes++;
 	}
 
 
 
 	// Update is called once per frame
 	void Update () {
-		if(GameManager.gameInProgress){
-			while(GameManager.numberOfCubes < maxCubes){
+		if(GameManager.current.gameInProgress){
+			while(GameManager.current.numberOfCubes < maxCubes){
 				AddCube();
 			}
 		}
