@@ -12,6 +12,7 @@ public class HollowCubeScript : MonoBehaviour {
 	bool isModifiedColor;
 	GameObject gameController;
 	bool collided;
+	ParticleSystem p;
 
 	void Start () {
 		passed = false;
@@ -19,7 +20,8 @@ public class HollowCubeScript : MonoBehaviour {
 		maxScale = 1600.0F;
 		isModifiedColor = false;
 		gameController = GameObject.FindGameObjectWithTag("GameController");
-
+		p = gameObject.GetComponentInChildren<ParticleSystem>();
+		p.Stop ();
 	}
 
 	void Reset(){
@@ -42,6 +44,10 @@ public class HollowCubeScript : MonoBehaviour {
 		transform.rotation =  GameManager.current.cubeRotation * rotationOffset;
 		transform.position = Vector3.zero;
 
+		if(scale > 0.05F && scale < 10.0F && !p.isPlaying){
+			p.Play ();
+			p.startColor = GetComponent<Renderer>().material.color;
+		}
 
 		if(scale > 2.0F && !passed){ // Past the 
 			GameManager.current.score++;
@@ -52,6 +58,7 @@ public class HollowCubeScript : MonoBehaviour {
 			isModifiedColor = true;
 			passed = true;
 			GameManager.current.numberOfCubes--; // Currently not deleting cubes, so subtract when they've passed
+			p.Stop ();
 		}
 		if(GameManager.current.rewind && isModifiedColor){
 			GetComponent<Renderer>().material.SetColor("_Color", originalColor);

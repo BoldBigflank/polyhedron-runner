@@ -17,7 +17,6 @@ public class GameManager : MonoBehaviour {
 	public Vector3 r; // For camera rotation
 	public int sensitivity;
 	public bool rewind;
-	public ParticleSystem particles;
 	
 	public Cardboard cardboardScript;
 	public CardboardHead cardboardHeadScript;
@@ -154,7 +153,6 @@ public class GameManager : MonoBehaviour {
 		rewind = false;
 		rotationLog.Clear ();
 		rotationLog.Push (new rotationEvent(timer, cubeRotation));
-		particles.Clear (true);
 		gameInProgress = true;
 		paused = false;
 		Time.timeScale = 1.0F;
@@ -221,14 +219,9 @@ public class GameManager : MonoBehaviour {
 //		UnityEngine.Apple.TV.Remote.allowExitToHome = allowExitToHome;
 	}
 
-	public void SetColor (Color cubeColor)
-	{
-		particles.startColor = cubeColor;
-	}
 
 	void Hit(){
 		rewind = true;
-		particles.Clear(true);
 		gameInProgress = false;
 		if(score > highScore){
 			highScore = score;
@@ -322,7 +315,6 @@ public class GameManager : MonoBehaviour {
 			} else {
 				timer += Time.deltaTime * 0.85F; // Increment the timer (15% slower now)
 				timer += Time.deltaTime * Mathf.Min((score/8) * 0.25F, 0.85F); // Speed up the timer 1/4 every 8 cubes, capping at 0.85
-				particles.startSpeed = 2.0f + Mathf.Min((score/8) * 0.25F, 0.85F);
 				if(timer > rotationLog.Peek ().time + rotationEventInterval){
 					rotationLog.Push (new rotationEvent(timer, cubeRotation));
 				}
@@ -350,7 +342,6 @@ public class GameManager : MonoBehaviour {
 		} 
 
 		if(rewind == true){
-			particles.startSpeed = 0.0f;
 			mainCamera.GetComponent<AudioSource>().pitch = -0.4F;
 
 			while(rotationLog.Count > 0 && rotationLog.Peek().time > timer){
