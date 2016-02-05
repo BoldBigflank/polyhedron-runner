@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour {
 	public Image controlsImage;
 	public Text controlsText;
 	public Button controlButton;
+	public Button vrModeButton;
 	public Button playButton;
 	public Text bestText;
 	public Text lastText;
@@ -113,7 +114,7 @@ public class GameManager : MonoBehaviour {
 		AudioListener.volume = (sound) ? 1.0F : 0.0F;
 
 		if(!PlayerPrefs.HasKey("vrMode")){
-			PlayerPrefs.SetInt ("vrMode", 1);
+			PlayerPrefs.SetInt ("vrMode", 0);
 		}
 		
 		vrMode = PlayerPrefs.GetInt ("vrMode") == 1;
@@ -257,10 +258,16 @@ public class GameManager : MonoBehaviour {
 		vrMode = !vrMode;
 		PlayerPrefs.SetInt("vrMode", (vrMode) ? 1:0 );
 		SetVRMode ();
+
 	}
 	
 	void SetVRMode(){
-		
+		// Disable for iPad
+		if(SystemInfo.deviceModel.Contains("iPad")){
+			vrMode = false;
+			vrModeButton.enabled = false;
+		}
+
 		cardboardScript.VRModeEnabled = vrMode;
 		cardboardHeadScript.trackRotation = vrMode;
 		controlButton.transform.localScale = (!vrMode ) ? Vector3.one : Vector3.zero;
@@ -272,6 +279,9 @@ public class GameManager : MonoBehaviour {
 		} else {
 			logo.transform.rotation = Quaternion.Euler(0.0f, 180.0f, 0.0f);
 		}
+
+
+
 	}
 	
 	// Update is called once per frame
