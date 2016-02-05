@@ -1653,7 +1653,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vrModeEnabled: 1
-  distortionCorrection: 2
+  distortionCorrection: 1
   enableAlignmentMarker: 1
   enableSettingsButton: 1
   backButtonMode: 1
@@ -1661,6 +1661,7 @@ MonoBehaviour:
   neckModelScale: 0
   autoDriftCorrection: 1
   electronicDisplayStabilization: 0
+  syncWithCardboardApp: 0
   autoUntiltHead: 1
   UseUnityRemoteInput: 0
   screenSize: 0
@@ -2132,6 +2133,7 @@ MonoBehaviour:
   controlsImage: {fileID: 1208447227}
   controlsText: {fileID: 94022532}
   controlButton: {fileID: 525434635}
+  vrModeButton: {fileID: 643562076}
   playButton: {fileID: 2042983290}
   bestText: {fileID: 111192868}
   lastText: {fileID: 1923269964}
